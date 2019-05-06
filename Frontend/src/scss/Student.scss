@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand');
+
+.title {
+    display: grid;
+    margin: 0;
+    justify-self: center;
+    align-self: center;
+    font-size: 2.8em;
+}
+
+#date-form {
+    display: grid;
+    grid-gap: 15px;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 4px;
+    max-width: 350px;
+    opacity: 0.95;
+    position: relative;
+    text-align: center;
+    width: 27em;
+
+    .confirm-date-btn, .change-date-btn {
+        width: 100%;
+        height: 50px;
+        border-radius: 0;
+        position: absolute;
+        bottom: -40px;
+        background: #f55f5f;
+    }
+
+    .change-date-btn {
+        background: #882891;
+    }
+}
+
+.student-bg-image {
+    background-image: url(/images/student-bg.jpg);
+}
+
+.verified-email {
+    width: 400px;
+    font-size: 2em;
+    padding: 15px;
+    text-align: center;
+    color: rgb(50, 54, 54);
+    background-color: #fff;
+    border-radius: 10px;
+
+    .to-email-btn {
+        margin-top: 15px;
+        font-size: 1.1em;
+        & span {
+            color: #fff;
+        }
+    }
+
+    & span {
+        font-size: .5em;
+        display: block;
+        color: #928f92;
+    }
+}
+

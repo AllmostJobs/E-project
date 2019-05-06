@@ -1,0 +1,41 @@
+.auth-bg-image {
+    background-image: url(/images/auth-bg.jpg);
+}
+
+.form {
+    display: grid;
+    width: 300px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    padding: 10px 10px 0 10px;
+    background: linear-gradient(#e79292, #949ad8);
+    color: #fff;
+
+    #submit-button, #change-auth-button {
+        display: grid;
+        width: 150px;
+        justify-self: center;
+        margin: 0 0 5px 0;
+        height: 40px;
+    }
+
+    #submit-button {
+        margin-top: 10px;
+    }
+
+    .FormTitle {
+        text-align: center;
+        font-size: 1.5em;
+        margin: 8px 0;
+        color: #6333bb;
+    }
+
+    .datePickerRegistration {
+        width: 265px;
+        justify-self: center;
+    }
+
+    .custom-link {
+        text-decoration: none;
+        color: rgb(109, 71, 71);
+    }
+}

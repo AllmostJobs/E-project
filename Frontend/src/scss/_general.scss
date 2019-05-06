@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:500');
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.user-bg {
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.user-header {
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    display: grid;
+    justify-content: right;
+    padding: 8px;
+
+    .userNameWrap {
+        display: grid;
+        grid-template-columns: auto 40px;
+    }
+
+    .user-name {
+        line-height: 40px;
+        justify-self: right;
+        font-size: 1.1em;
+        padding-right: 10px;
+        color: rgba(255, 255, 255, 0.75);
+        margin: 0;
+        font-family: 'Quicksand', sans-serif;
+    }
+}
