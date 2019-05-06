@@ -1,6 +1,7 @@
 import React from "react";
 import { Select } from 'antd';
 import Axios from "axios";
+import Cookies from 'js-cookie';
 
 const { Option } = Select;
 
@@ -14,7 +15,8 @@ const Sorting = ({ setUserList }) => {
     ];
 
     const Sort = (value) => {
-        Axios.post(`http://localhost:64660/api/admin/sort/${value}`)
+        const token = Cookies.getJSON('user').token;
+        Axios.get(`http://localhost:64660/api/admin/sort/${value}`, { headers: { Authorization: `Bearer ${token}` } })
         .then(({ data }) => {
             setUserList(data);
         })

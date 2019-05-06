@@ -46,7 +46,6 @@ const UserTable = ({ setUserList, userList, setClickedUser }) => {
 
     const GetUsers = () => {
       const token = Cookies.getJSON('user').token;
-      console.log(Cookies.getJSON('user'));
       Axios.get('http://localhost:64660/api/admin', { headers: { Authorization: "Bearer " + token } })
       .then(({ data }) => {
           setUserList(data);

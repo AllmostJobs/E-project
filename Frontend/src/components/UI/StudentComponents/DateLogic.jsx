@@ -14,7 +14,8 @@ export const StudentForm = ({ studyDate, userId, setUser }) => {
 
     const Submit = (e) => {
         e.preventDefault();
-        Axios.put(`http://localhost:64660/api/student/${userId}/${studyDateCalendar}`)
+        const token = Cookies.getJSON("user").token;
+        Axios.get(`http://localhost:64660/api/student/${userId}/${studyDateCalendar}`, { headers: { Authorization: `Bearer ${token}` } })
         .then(({ data }) => {
             Cookies.set('user', data);
             setUser(data);

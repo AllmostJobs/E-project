@@ -15,18 +15,16 @@ namespace E_project.Services
     public class AuthService
     {
         IConfiguration configuration;
-        E_projectContext db;
 
-        public AuthService(IConfiguration configuration, E_projectContext db)
+        public AuthService(IConfiguration configuration)
         {
             this.configuration = configuration;
-            this.db = db;
         }
 
-        public string CreateToken(string userId)
+        public string BuildToken(User user)
         {
             Claim[] claims = new[] {
-                new Claim(JwtRegisteredClaimNames.NameId, userId),
+                new Claim(JwtRegisteredClaimNames.NameId, user.Id),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]));
@@ -36,6 +34,7 @@ namespace E_project.Services
                 configuration["JWT:Issuer"],
                 configuration["JWT:Issuer"],
                 claims,
+                expires: DateTime.Now.AddDays(7),
                 signingCredentials: credentials
             );
 

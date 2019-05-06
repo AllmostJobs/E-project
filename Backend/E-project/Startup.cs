@@ -29,7 +29,6 @@ namespace E_project
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<E_projectContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:E_projectConnection"]));
@@ -41,6 +40,7 @@ namespace E_project
                     {
                         ValidateIssuer = true,
                         ValidateAudience = true,
+                        ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = Configuration["JWT:Issuer"],
                         ValidAudience = Configuration["JWT:Issuer"],

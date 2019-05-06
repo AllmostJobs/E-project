@@ -19,8 +19,6 @@ const Student = ({ setUser, user }) => {
         setUser({});
     }
 
-    clearInterval();
-
     return (
         <div className="user-bg student-bg-image">
             <Header 

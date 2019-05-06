@@ -1,6 +1,7 @@
-import React from "react";
+import React from 'react';
 import { Input } from 'antd';
 import Axios from 'axios';
+import Cookies from 'js-cookie';
 
 const Search = Input.Search;
 
@@ -10,7 +11,8 @@ const Serching = ({ setUserList }) => {
         if(value == '') {
             value = 'all'; 
         }
-        Axios.post(`http://localhost:64660/api/admin/serch/${value}`)
+        const token = Cookies.getJSON("user").token;
+        Axios.get(`http://localhost:64660/api/admin/serch/${value}`, { headers: { Authorization: `Bearer ${token}` } })
         .then(({ data }) => {
             setUserList(data);
         })

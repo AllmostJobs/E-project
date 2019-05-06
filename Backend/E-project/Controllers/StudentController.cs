@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using E_project.Models;
 using E_project.Models.UIModels;
 using E_project.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_project.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class StudentController : ControllerBase
@@ -25,7 +27,13 @@ namespace E_project.Controllers
             this.mailService = mailService;
         }
 
-        [HttpPut("{id}/{date}")]
+        [HttpGet("x")]
+        public IActionResult get()
+        {
+            return Ok("Ok");
+        }
+
+        [HttpGet("{id}/{date}")]
         public IActionResult SetDateOfStudy(string id, string date)
         {
             UserUI user = userService.SetDateOfStudy(id, date);

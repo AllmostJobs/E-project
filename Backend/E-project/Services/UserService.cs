@@ -61,7 +61,7 @@ namespace E_project.Services
                 RegistratedDate = user.RegistratedDate,
                 StudyDate = user.StudyDate,
                 isAdmin = user.isAdmin,
-                Token = authService.CreateToken(user.Id),
+                Token = authService.BuildToken(user),
             };
         }
 
@@ -82,7 +82,7 @@ namespace E_project.Services
                     RegistratedDate = user.RegistratedDate,
                     StudyDate = user.StudyDate,
                     isAdmin = user.isAdmin,
-                    Token = authService.CreateToken(user.Id),
+                    Token = authService.BuildToken(user),
                 });
             }
             return userUIList;
@@ -118,7 +118,7 @@ namespace E_project.Services
                         DateOfBirth = user.DateOfBirth,
                         RegistratedDate = user.RegistratedDate,
                         StudyDate = user.StudyDate,
-                        Token = authService.CreateToken(user.Id),
+                        Token = null,
                     });
                 }
             }

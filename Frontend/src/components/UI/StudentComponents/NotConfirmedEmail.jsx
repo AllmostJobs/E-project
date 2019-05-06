@@ -8,7 +8,7 @@ import { Button } from "@material-ui/core";
 
 const NotConfirmedEmail = ({ user, setEmail }) => {
     const SendConfirmMessage = () => {
-        Axios.get(`http://localhost:64660/api/student/email/confirm/${user.id}`)
+        Axios.get(`http://localhost:64660/api/student/email/confirm/${user.id}`, { headers: { Authorization: `Bearer ${user.token}` } })
         .then(({ data }) => {
             Cookies.set('email', data);
             setEmail(data);

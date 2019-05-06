@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_project.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase
@@ -33,13 +34,13 @@ namespace E_project.Controllers
             return Ok(userService.GetUsers());
         }
 
-        [HttpPost("serch/{value}")]
+        [HttpGet("serch/{value}")]
         public IActionResult UserSerch(string value)
         {
             return Ok(serchService.SerchUsers(value));
         }
 
-        [HttpPost("sort/{value}")]
+        [HttpGet("sort/{value}")]
         public IActionResult UserSort(string value)
         {
             return Ok(sortService.GetSortedUsers(value));
