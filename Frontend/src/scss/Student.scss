@@ -13,7 +13,7 @@
     grid-gap: 15px;
     padding: 30px;
     background: #ffffff;
-    border-radius: 4px;
+    border-radius: 4px 4px 0 0;
     max-width: 350px;
     opacity: 0.95;
     position: relative;
@@ -25,7 +25,7 @@
         height: 50px;
         border-radius: 0;
         position: absolute;
-        bottom: -40px;
+        bottom: -50px;
         background: #f55f5f;
     }
 

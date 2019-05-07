@@ -55,8 +55,8 @@ const UserTable = ({ setUserList, userList, setClickedUser }) => {
 
     useEffect(GetUsers, []);
 
-    const click = (value) => {
-      setClickedUser(value);
+    const OnUserClick = (user) => {
+      setClickedUser(user);
     }
 
     return (
@@ -64,7 +64,7 @@ const UserTable = ({ setUserList, userList, setClickedUser }) => {
           rowKey={ item => item.id } 
           onRow={(user, rowIndex) => {
             return {
-              onClick: () => click(user), 
+              onClick: () => OnUserClick(user), 
             };
           }}  
           dataSource={userList} 

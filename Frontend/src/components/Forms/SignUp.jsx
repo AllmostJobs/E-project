@@ -47,9 +47,9 @@ const SignUp = ({ classes, setUser, setEmail }) => {
         Axios.post('http://localhost:64660/api/signup', data)
         .then(({ data }) => {
             Cookies.set('email', data.isConfirmed);
+            setEmail(data.isConfirmed);
             Cookies.set('user', data.user);
             setUser(data.user);
-            setEmail(data.isConfirmed);
         }).catch(error => !!error.response && console.log(error.response));
     }
 

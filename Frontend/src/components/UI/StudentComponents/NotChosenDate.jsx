@@ -17,7 +17,7 @@ const NotChosenDate = ({ Submit, onDateChange, studyDate, disabledDate }) => {
                 onChange={onDateChange}
             />
             { !!studyDate &&
-                <Button id="submit-button" type="submit" variant="contained" className="confirm-date-btn" color="primary" >
+                <Button type="submit" variant="contained" className="confirm-date-btn" color="primary" >
                     Choose this date
                 </Button>
             }

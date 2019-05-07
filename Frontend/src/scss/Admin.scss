@@ -54,6 +54,7 @@
 .user-popup {
     display: grid;
     position: relative;
+    z-index: 10;
     
     .ant-input {
         border-radius: 0;
