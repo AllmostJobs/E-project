@@ -1,5 +1,5 @@
 .auth-bg-image {
-    background-image: url(/images/auth-bg.jpg);
+    background-image: url(/images/student-bg.jpg);
 }
 
 .form {
@@ -7,8 +7,15 @@
     width: 300px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);
     padding: 10px 10px 0 10px;
-    background: linear-gradient(#e79292, #949ad8);
-    color: #fff;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px 20px;
+
+    .valid-message {
+        font-size: .7rem;
+        color: tomato;
+        padding-left: 5px;
+    }
 
     #submit-button, #change-auth-button {
         display: grid;

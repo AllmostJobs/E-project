@@ -6,7 +6,7 @@ const NotChosenDate = ({ Submit, onDateChange, studyDate, disabledDate }) => {
     return (
         <form id="date-form" onSubmit={Submit}>
             <Icon style={{ fontSize: '50px', }} type="smile" />
-            <p className="title">The first, choose your a wish date of study</p>
+            <p className="title">The first, choose your wish study date</p>
             <DatePicker
                 className="input-date datePickerRegistration" 
                 disabledDate={disabledDate} 

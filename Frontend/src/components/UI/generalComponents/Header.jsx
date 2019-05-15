@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 import { Avatar, Menu, Dropdown } from 'antd';
+import { Logotype } from "./Logotype";
 
 const colorList = ['#919558', '#fc864c', '#f2d470', '#401212', '#a59a3d', '#2e2f39', '#123141', '#ebbb3d'];
 
@@ -11,6 +12,7 @@ let color = colorList[getRandomInt(colorList.length)];
 const Header = ({ logOut, firstName, lastName }) => {
     return (
         <header className="user-header">
+            <Logotype/>
             <Dropdown overlay={() => (
                 <Menu>
                     <Menu.Item key="0" onClick={logOut}>

@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:500');
+@import url('https://fonts.googleapis.com/css?family=Audiowide|Gugi|Libre+Barcode+128+Text|Monoton');
 
 * {
     padding: 0;
@@ -6,10 +7,22 @@
     font-family: 'Montserrat', sans-serif;
 }
 
+.logotype {
+    color: #fff;
+    font-size: 2.5rem;
+    margin: 0;
+    font-family: 'Gugi', cursive;
+
+    &::first-letter {
+        color: tomato;
+    }
+}
+
 .user-bg {
     height: 100vh;
     width: 100vw;
     display: grid;
+    padding-top: 60px;    
     justify-content: center;
     align-content: center;
     background-color: #fff;
@@ -22,12 +35,14 @@
     top: 0;
     width: 100vw;
     display: grid;
-    justify-content: right;
-    padding: 8px;
+    grid-template-columns: 250px auto;
+    align-items: center;
+    padding: 0 50px;
 
     .userNameWrap {
         display: grid;
         grid-template-columns: auto 40px;
+        justify-self: end;
     }
 
     .user-name {

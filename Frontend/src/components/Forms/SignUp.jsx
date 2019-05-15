@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { Link } from 'react-router-dom';
@@ -11,24 +10,7 @@ import { setEmail } from "../../store/actions/emailActions";
 import { DatePicker } from 'antd';
 import Axios from "axios";
 
-const Styles = theme => ({
-    button: {
-        margin: theme.spacing.unit,
-    },
-    input: {
-        display: 'none',
-    },
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    textField: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-    },
-});
-
-const SignUp = ({ classes, setUser, setEmail }) => {
+const SignUp = ({ setUser, setEmail }) => {
     const [data, setData] = useState({
         firstName: '',
         lastName: '',
@@ -38,19 +20,46 @@ const SignUp = ({ classes, setUser, setEmail }) => {
         retypePassword: '',
     });
 
+    const [firstNameValid, setFirstNameValid] = useState('');
+    const [lastNameValid, setLastNameValid] = useState('');
+    const [passwordValid, setPasswordValid] = useState('');
+    const [rePassValid, setRePassValid] = useState('');
+
     const onDateChange = (date, dateStr) => setData(data => ({ ...data, dateOfBirth: dateStr }));
 
     const { firstName, lastName, email, password, retypePassword } = data;
 
+    
+
     const Submit = (e) => {
         e.preventDefault();
-        Axios.post('http://localhost:64660/api/signup', data)
-        .then(({ data }) => {
-            Cookies.set('email', data.isConfirmed);
-            setEmail(data.isConfirmed);
-            Cookies.set('user', data.user);
-            setUser(data.user);
-        }).catch(error => !!error.response && console.log(error.response));
+        if(firstName.length < 4 || isNaN(firstName) == false) {
+            setFirstNameValid('Must be more than 4 characters and should not be completely digits');
+        }else{
+            setFirstNameValid('');
+            if(lastName.length < 4 || isNaN(firstName) == false) {
+                setLastNameValid('Must be more than 4 characters and should not be completely digits');
+            } else{
+                setLastNameValid('');
+                if(password.length < 6) {
+                    setPasswordValid('Its to short');
+                } else{
+                    setPasswordValid('');
+                    if(retypePassword === password) {
+                        setRePassValid('');
+                        Axios.post('http://localhost:64660/api/signup', data)
+                        .then(({ data }) => {
+                            Cookies.set('email', data.isConfirmed);
+                            setEmail(data.isConfirmed);
+                            Cookies.set('user', data.user);
+                            setUser(data.user);
+                        }).catch(error => !!error.response && console.log(error.response));
+                    } else{
+                        setRePassValid('Not matching password');
+                    }
+                }
+            }
+        }
     }
 
     const onChange = ({target: {name, value}}) => {
@@ -65,32 +74,29 @@ const SignUp = ({ classes, setUser, setEmail }) => {
             <form className="form" onSubmit={Submit} autoComplete="off">
                 <h3 className="FormTitle">Sign Up</h3>
                 <TextField
-                    required={true}
                     id="first-name"
                     label="First Name"
-                    className={classes.textField}
                     name="firstName"
                     value={firstName}
                     onChange={onChange}
                     margin="normal"
                     variant="outlined"
                 />
+                <span className="valid-message">{firstNameValid}</span>
                 <TextField
-                    required={true}
                     id="last-name"
                     label="Last Name"
-                    className={classes.textField}
                     name="lastName"
                     value={lastName}
                     onChange={onChange}
                     margin="normal"
                     variant="outlined"
                 />
+                <span className="valid-message">{lastNameValid}</span>
                 <TextField
                     required={true}
                     id="email"
                     label="Email"
-                    className={classes.textField}
                     type="email"
                     name="email"
                     margin="normal"
@@ -99,10 +105,8 @@ const SignUp = ({ classes, setUser, setEmail }) => {
                     onChange={onChange}
                 />
                 <TextField
-                    required={true}
                     id="password"
                     label="Password"
-                    className={classes.textField}
                     type="password"
                     name="password"
                     autoComplete="current-password"
@@ -111,12 +115,11 @@ const SignUp = ({ classes, setUser, setEmail }) => {
                     value={password}
                     onChange={onChange}
                 />
+                <span className="valid-message">{passwordValid}</span>
                 <TextField
-                    required={true}
                     error={password === retypePassword ? false : true}
                     id="retype-password"
                     label="Retype Password"
-                    className={classes.textField}
                     type="password"
                     name="retypePassword"
                     autoComplete="current-password"
@@ -125,6 +128,7 @@ const SignUp = ({ classes, setUser, setEmail }) => {
                     value={retypePassword}
                     onChange={onChange}
                 />
+                <span className="valid-message">{rePassValid}</span>
 
                 <br/>
 
@@ -135,10 +139,10 @@ const SignUp = ({ classes, setUser, setEmail }) => {
                 />
 
                 <br/>
-                <Button id="submit-button" type="submit" variant="contained" color="secondary" className={classes.button}>
+                <Button id="submit-button" type="submit" variant="contained" color="secondary">
                     Sign Up
                 </Button>
-                <Button id="change-auth-button" color="primary" className={classes.button}>
+                <Button id="change-auth-button" color="primary">
                     <Link className="custom-link" to="/">Back</Link>
                 </Button>
             </form>
@@ -146,14 +150,8 @@ const SignUp = ({ classes, setUser, setEmail }) => {
     )
 }
 
-SignUp.propTypes = {
-    classes: PropTypes.object.isRequired,
-  };
-
 const mapStateToProps = ({}) => ({});
 
 const mapDispatchToProps = { setUser, setEmail }
 
-const SignUpWithStyles = withStyles(Styles)(SignUp);
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpWithStyles);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

@@ -1,6 +1,7 @@
 import { Card, Icon, Input, Form } from 'antd';
 import React, { useEffect } from 'react';
 import Axios from 'axios';
+import Cookies from 'js-cookie';
 
 const InputGroup = Input.Group;
 let info = '';
@@ -14,8 +15,9 @@ const UserPopup = ({ user, setClickedUser, setMail, mail, setMessageStatus, mess
 
     const SendMail = (e) => {
         e.preventDefault();
+        const token = Cookies.getJSON('user').token;
         if(mail.subject != '' && mail.message != '') {
-            Axios.post('http://localhost:64660/api/admin/mail', mail,  { headers: { Authorization: `Bearer ${user.token}` } })
+            Axios.post('http://localhost:64660/api/admin/mail', mail,  { headers: { Authorization: `Bearer ${token}` } })
             .then(({ data }) => {
                 
             })

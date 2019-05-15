@@ -50,6 +50,18 @@ const App = ({ user, setUser, email }) => (
                         return <Redirect from="/admin" to="/" />
                     }
                 }} />
+                <Route path="/confirm/:id/:code" component={({match}) => {
+                    if(JSON.stringify(user) != '{}') {
+                        if(user.isAdmin == false) {
+                            if(email == false) {
+                                return <NotConfirmedEmail confirmUserId={match.params.id} confirmCode={match.params.code}/>
+                            }
+                            return <Redirect from="/confirm" to="/student" />
+                        }
+                        return <Redirect from="/confirm" to="/admin" />
+                    }
+                    return <Redirect from="/confirm" to="/" />
+                }} />
                 <Route path="/confirm" component={() => {
                     if(JSON.stringify(user) != '{}') {
                         if(user.isAdmin == false) {

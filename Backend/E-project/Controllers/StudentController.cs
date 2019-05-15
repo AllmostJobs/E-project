@@ -27,12 +27,6 @@ namespace E_project.Controllers
             this.mailService = mailService;
         }
 
-        [HttpGet("x")]
-        public IActionResult get()
-        {
-            return Ok("Ok");
-        }
-
         [HttpGet("{id}/{date}")]
         public IActionResult SetDateOfStudy(string id, string date)
         {
@@ -56,14 +50,16 @@ namespace E_project.Controllers
             return Ok(mailService.CheckIsMailConfirmed(id));
         }
 
-        [HttpGet("confirm/{id}/{code}")]
-        public IActionResult ConfirmEmail(string id, string code)
+        [HttpPost("email/confirm")]
+        public IActionResult ConfirmEmail(ConfirmEmailUI obj)
         {
-            ConfirmEmail record = mailService.GetConfirmEmailRecord(id);
-            if(code == record.Code)
-            {
-                mailService.SetEmailStatus(true, id);
-                return Ok("Email is confirmed");
+            if(obj.UserId != null || obj.Code != null) { 
+                ConfirmEmail record = mailService.GetConfirmEmailRecord(obj.UserId);
+                if(obj.Code == record.Code)
+                {
+                    mailService.SetEmailStatus(true, obj.UserId);
+                    return Ok(mailService.CheckIsMailConfirmed(obj.UserId));
+                }
             }
             return BadRequest();
         }

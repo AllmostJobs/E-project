@@ -9,6 +9,7 @@ import Serching from "./AdminComponents/Serching";
 import Sorting from "./AdminComponents/Sorting";
 import Axios from "axios";
 import UserPopup from "./AdminComponents/UserPopup";
+import { TitleHeader } from "./AdminComponents/TitleHeader";
 
 let isMounted = true;
 
@@ -39,26 +40,32 @@ const Admin = ({ setUser, user }) => {
                 firstName={firstName} 
                 lastName={lastName} 
             />
-            <div className="operations-wrapper">
-                <Serching setUserList={setUserList}/>
-                <Sorting setUserList={setUserList}/>
+            <div className="table-wrap">
+                <TitleHeader/>
+                <div className="main-wrapper">
+                    <div className="operations-wrapper">
+                        <Serching setUserList={setUserList}/>
+                        <Sorting setUserList={setUserList}/>
+                    </div>
+                    <UserTable 
+                        setClickedUser={setClickedUser}
+                        setUserList={setUserList}
+                        userList={userList}
+                    />
+                    {
+                        clickedUser != '' && <UserPopup 
+                                                setClickedUser={setClickedUser} 
+                                                user={clickedUser}
+                                                setMail={setMail}
+                                                mail={mail}
+                                                clickedUser={clickedUser.email}
+                                                messageStatus={messageStatus}
+                                                setMessageStatus={setMessageStatus}
+                                            />
+                    }
+
+                </div>
             </div>
-            <UserTable 
-                setClickedUser={setClickedUser}
-                setUserList={setUserList}
-                userList={userList}
-            />
-            {
-                clickedUser != '' && <UserPopup 
-                                        setClickedUser={setClickedUser} 
-                                        user={clickedUser}
-                                        setMail={setMail}
-                                        mail={mail}
-                                        clickedUser={clickedUser.email}
-                                        messageStatus={messageStatus}
-                                        setMessageStatus={setMessageStatus}
-                                    />
-            }
         </div>
     )
 }

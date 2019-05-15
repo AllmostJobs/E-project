@@ -2,6 +2,43 @@
     background-image: url(/images/admin-bg.jpg);
 }
 
+.table-wrap {
+    position: absolute;
+    width: 100%;
+    padding: 0 100px;
+    display: grid;
+    align-content: start;
+    justify-content: center;
+}
+
+.title-header {
+    background-color: rgb(90, 50, 97);
+    padding: 15px 0;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    text-align: center;
+    border-radius: 5px 5px 0 0;
+
+    h3 {
+        color: #fff;
+        font-size: .9rem;
+        margin: 0;
+    }
+}
+
+.main-wrapper {
+    width: calc(100vw - 100px);
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    border-radius: 0 0 5px 5px;
+    overflow: hidden;
+
+    .ant-select {
+        width: 100%;
+        border-top: 2px solid rgb(90, 50, 97);
+    }
+}
+
 .ant-table-wrapper {
     background-color: #fff;
 
@@ -18,23 +55,21 @@
         color: rgb(150, 146, 146) !important;
     }
 
-    .date-exist {
-        border-radius: 25px;
-        padding: 0 5px;
-        background-color: rgb(200, 245, 202); 
-    }
-
-    .date-not-exist {
+    .date-not-exist, .date-exist {
         border-radius: 25px;
         padding: 0 5px;
         background-color: rgb(245, 200, 200); 
         text-align: center;
     }
+
+    .date-exist {
+        background-color: rgb(200, 245, 202); 
+    }
 }
 
 .operations-wrapper {
-    display: grid;
-    grid-template-columns: auto auto;
+    background-color: #fff;
+    border-right: 2px solid rgb(90, 50, 97);
 
     .ant-input, .ant-select-selection {
         border-radius: 0;

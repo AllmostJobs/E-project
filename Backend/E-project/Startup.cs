@@ -67,6 +67,7 @@ namespace E_project
             services.AddTransient<MailService>();
             services.AddTransient<HangfireService>();
             services.AddTransient<UserService>();
+            services.AddTransient<HtmlService>();
             
             services.AddMvc();
         }

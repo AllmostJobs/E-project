@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { setEmail } from "../../../store/actions/emailActions";
 import { connect } from "react-redux";
 import Cookies from "js-cookie";
@@ -6,13 +6,30 @@ import Axios from "axios";
 import Header from "../generalComponents/Header";
 import { Button } from "@material-ui/core";
 
-const NotConfirmedEmail = ({ user, setEmail }) => {
+const NotConfirmedEmail = ({ user, setEmail, confirmUserId, confirmCode }) => {
+    const [confirmData, setConfirmData] = useState({
+        userId: confirmUserId,
+        code: confirmCode
+    })
+
     const SendConfirmMessage = () => {
         Axios.get(`http://localhost:64660/api/student/email/confirm/${user.id}`, { headers: { Authorization: `Bearer ${user.token}` } })
         .then(({ data }) => {
             Cookies.set('email', data);
             setEmail(data);
         }).catch(error => !!error.response && console.log(error.response));
+    }
+
+    const SendConfirmParams = () => {
+        Axios.post(`http://localhost:64660/api/student/email/confirm`, confirmData, { headers: { Authorization: `Bearer ${user.token}` } })
+        .then(({ data }) => {
+            Cookies.set('email', data);
+            setEmail(data);
+        }).catch(error => !!error.response && console.log(error.response));
+    }
+
+    if(JSON.stringify(confirmData) != '{}'){
+        useEffect(SendConfirmParams, []);
     }
 
     const logOut = () => {
@@ -30,7 +47,7 @@ const NotConfirmedEmail = ({ user, setEmail }) => {
                 lastName={user.lastName} 
             />
             <div className="verified-email">
-                Email is not verified <span>(please confirm your email)</span>
+            Welcome! Your user is not confirmed. Please, go to Gmail in order to finish the registration <span>(please confirm your email)</span>
                 <Button 
                     id="submit-button" 
                     href="https://mail.google.com/mail" 

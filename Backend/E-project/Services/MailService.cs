@@ -14,11 +14,15 @@ namespace E_project.Services
     {
         private E_projectContext db;
         private UserService userService;
+        private HtmlService htmlService;
+        private string domain;
 
-        public MailService(E_projectContext db, UserService userService)
+        public MailService(E_projectContext db, UserService userService, HtmlService htmlService)
         {
             this.db = db;
             this.userService = userService;
+            this.htmlService = htmlService;
+            this.domain = "http://localhost:8080";
         }
 
         public bool CheckIsMailConfirmed(string userId)
@@ -80,8 +84,10 @@ namespace E_project.Services
                 MailMessage mailMessage = new MailMessage("e.project.rv@gmail.com", user.Email)
                 {
                     Subject = "Confirm email",
-                    Body = "http://localhost:64660/api/student/confirm/" + userId + "/" + confirmCode
+                    Body = htmlService.BuildMailTemplate(user, confirmCode, domain)
                 };
+
+                mailMessage.IsBodyHtml = true;
 
                 smtpClient.Send(mailMessage);
             }

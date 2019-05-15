@@ -6,7 +6,7 @@ const ChosenDate = ({ changeDate }) => {
     return (
         <form id="date-form">
             <Icon style={{ fontSize: '50px', }} type="smile" />
-            <p className="title">Good, now you just have to wait a little</p>
+            <p className="title">Well, now you should wait for the admin to contact you  </p>
             
             <Button id="submit-button" onClick={changeDate} variant="contained" className="change-date-btn" color="primary" >
                 Change date

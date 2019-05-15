@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { Link } from 'react-router-dom';
@@ -10,24 +9,7 @@ import { setEmail } from "../../store/actions/emailActions";
 import Cookies from "js-cookie";
 import Axios from "axios";
 
-const Styles = theme => ({
-    button: {
-        margin: theme.spacing.unit,
-    },
-    input: {
-        display: 'none',
-    },
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    textField: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-    },
-});
-
-const SignIn = ({ classes, setUser, setEmail }) => {
+const SignIn = ({ setUser, setEmail }) => {
     const [data, setData] = useState({
         email: '',
         password: ''
@@ -39,6 +21,7 @@ const SignIn = ({ classes, setUser, setEmail }) => {
         e.preventDefault();
         Axios.post('http://localhost:64660/api/signin', data)
         .then(({ data }) => {
+            setInputError(false);
             Cookies.set('email', data.isConfirmed);
             setEmail(data.isConfirmed);
             Cookies.set('user', data.user);
@@ -68,7 +51,6 @@ const SignIn = ({ classes, setUser, setEmail }) => {
                     required
                     error={inputError}
                     label="Email"
-                    className={classes.textField}
                     type="email"
                     name="email"
                     margin="normal"
@@ -81,19 +63,17 @@ const SignIn = ({ classes, setUser, setEmail }) => {
                     required
                     error={inputError}
                     label="Password"
-                    className={classes.textField}
                     type="password"
                     name="password"
-                    autoComplete="current-password"
                     margin="normal"
                     variant="outlined"
                     value={password}
                     onChange={onChange}
                 />
-                <Button id="submit-button" type="submit" variant="contained" color="primary" className={classes.button}>
+                <Button id="submit-button" type="submit" variant="contained" color="primary">
                     Sign In
                 </Button>
-                <Button id="change-auth-button" color="primary" className={classes.button}>
+                <Button id="change-auth-button" color="primary">
                     <Link className="custom-link" to="/sign-up" >Registration</Link>
                 </Button>
             </form>
@@ -101,14 +81,8 @@ const SignIn = ({ classes, setUser, setEmail }) => {
     )
 }
 
-SignIn.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = { setUser, setEmail };
 
-const ConnectedSignIn = connect(mapStateToProps, mapDispatchToProps)(SignIn);
-
-export default withStyles(Styles)(ConnectedSignIn);
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
