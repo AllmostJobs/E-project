@@ -5,14 +5,14 @@ import Cookies from 'js-cookie';
 
 const Search = Input.Search;
 
-const Serching = ({ setUserList }) => {
+const Searching = ({ setUserList }) => {
 
-    const Serch = (value) => {
+    const SearchStr = (value) => {
         if(value == '') {
             value = 'all'; 
         }
         const token = Cookies.getJSON("user").token;
-        Axios.get(`http://localhost:64660/api/admin/serch/${value}`, { headers: { Authorization: `Bearer ${token}` } })
+        Axios.get(`http://localhost:64660/api/admin/search/${value}`, { headers: { Authorization: `Bearer ${token}` } })
         .then(({ data }) => {
             setUserList(data);
         })
@@ -22,10 +22,10 @@ const Serching = ({ setUserList }) => {
     return (
         <Search
             placeholder="Serch by name"
-            onSearch={Serch}
+            onSearch={SearchStr}
             size="large"
         />
     )
 }
 
-export default Serching;
+export default Searching;

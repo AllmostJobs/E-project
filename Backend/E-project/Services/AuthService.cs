@@ -1,16 +1,13 @@
-﻿using E_project.Models;
-using E_project.Models.UIModels;
+﻿using EProject.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace E_project.Services
+namespace EProject.Services
 {
     public class AuthService
     {

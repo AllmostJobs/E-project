@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace E_project.Models.UIModels
+namespace EProject.Models.UIModels
 {
     public class LoginUI
     {

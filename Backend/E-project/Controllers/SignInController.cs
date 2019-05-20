@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using E_project.Models.UIModels;
-using E_project.Services;
-using Microsoft.AspNetCore.Http;
+﻿using EProject.Models.UIModels;
+using EProject.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace E_project.Controllers
+namespace EProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -25,20 +20,21 @@ namespace E_project.Controllers
         [HttpPost]
         public IActionResult LoginData(LoginUI data)
         {
-            if(data == null)
+            UserUI dbUser = userService.GetUser(data.Email, data.Password);
+
+            if (data == null || dbUser == null)
             {
-                return BadRequest();
+                return Ok("error");
             }
 
-            UserUI DbUser = userService.GetUser(data.Email, data.Password);
-
-            var response = new
+            if (dbUser.IsAdmin == true)
             {
-                isConfirmed = mailService.CheckIsMailConfirmed(DbUser.Id),
-                user = DbUser
-            };
-
-            return Ok(response);
+                return Ok(new { isConfirmed = true, user = dbUser });
+            }
+            else
+            {
+                return Ok(new { isConfirmed = mailService.CheckIsMailConfirmed(dbUser.Id), user = dbUser });
+            }
         }
     }
 }

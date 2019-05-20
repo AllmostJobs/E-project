@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace E_project.Models
+namespace EProject.Models
 {
     public class User
     {
@@ -15,6 +15,6 @@ namespace E_project.Models
         public string DateOfBirth { get; set; }
         public string RegistratedDate { get; set; }
         public string StudyDate { get; set; }
-        public bool isAdmin { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }

@@ -12695,9 +12695,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\E-project\\Backend\\E-project\\E-project.csproj",
-      "projectName": "E-project",
-      "projectPath": "E:\\E-project\\Backend\\E-project\\E-project.csproj",
+      "projectUniqueName": "E:\\E-project\\Backend\\E-project\\EProject.csproj",
+      "projectName": "EProject",
+      "projectPath": "E:\\E-project\\Backend\\E-project\\EProject.csproj",
       "packagesPath": "C:\\Users\\Evan\\.nuget\\packages\\",
       "outputPath": "E:\\E-project\\Backend\\E-project\\obj\\",
       "projectStyle": "PackageReference",

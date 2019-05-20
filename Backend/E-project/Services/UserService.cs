@@ -1,26 +1,25 @@
-﻿using E_project.Models;
-using E_project.Models.UIModels;
+﻿using EProject.Models;
+using EProject.Models.UIModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace E_project.Services
+namespace EProject.Services
 {
     public class UserService
     {
-        E_projectContext db;
-        AuthService authService;
+        private EProjectContext database;
+        private AuthService authService;
 
-        public UserService(E_projectContext db, AuthService authService)
+        public UserService(EProjectContext database, AuthService authService)
         {
-            this.db = db;
+            this.database = database;
             this.authService = authService;
         }
 
         public void AddUser(RegistrationUI user)
         {
-            db.Users.Add(new User
+            database.Users.Add(new User
             {
                 Id = Guid.NewGuid().ToString(),
                 Email = user.Email,
@@ -29,24 +28,15 @@ namespace E_project.Services
                 Password = user.Password,
                 RegistratedDate = DateTime.UtcNow.ToString("dd-MM-yyyy"),
                 DateOfBirth = user.DateOfBirth,
-                isAdmin = false,
+                IsAdmin = false,
             });
 
-            db.SaveChanges();
+            database.SaveChanges();
         }
 
         public bool IsEmailExist(string email)
         {
-            User checkUserEmail = db.Users.FirstOrDefault(x => x.Email == email);
-
-            if(checkUserEmail == null)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return database.Users.Any(x => x.Email == email);
         }
 
         public UserUI UserToUserUI(User user)
@@ -60,7 +50,7 @@ namespace E_project.Services
                 DateOfBirth = user.DateOfBirth,
                 RegistratedDate = user.RegistratedDate,
                 StudyDate = user.StudyDate,
-                isAdmin = user.isAdmin,
+                IsAdmin = user.IsAdmin,
                 Token = authService.BuildToken(user),
             };
         }
@@ -81,7 +71,7 @@ namespace E_project.Services
                     DateOfBirth = user.DateOfBirth,
                     RegistratedDate = user.RegistratedDate,
                     StudyDate = user.StudyDate,
-                    isAdmin = user.isAdmin,
+                    IsAdmin = user.IsAdmin,
                     Token = authService.BuildToken(user),
                 });
             }
@@ -90,25 +80,25 @@ namespace E_project.Services
 
         public UserUI GetUser(string id)
         {
-            User user = db.Users.First(x => x.Id == id);
+            User user = database.Users.FirstOrDefault(x => x.Id == id);
 
-            return UserToUserUI(user);
+            return user == null ? null :  UserToUserUI(user);
         }
 
         public UserUI GetUser(string email, string password)
         {
-            User user = db.Users.First(x => x.Email == email && x.Password == password);
+            User user = database.Users.FirstOrDefault(x => x.Email == email && x.Password == password);
 
-            return UserToUserUI(user);
+            return user == null ? null : UserToUserUI(user);
         }
 
         public List<UserUI> GetUsers() {
-            List<User> usersList = db.Users.ToList();
+            List<User> usersList = database.Users.ToList();
             List<UserUI> usersUIList = new List<UserUI>();
             int count = 1;
             foreach(var user in usersList)
             {
-                if (user.isAdmin != true)
+                if (user.IsAdmin != true)
                 {
                     usersUIList.Add(new UserUI {
                         Id = count++.ToString(),
@@ -128,12 +118,12 @@ namespace E_project.Services
 
         public UserUI SetDateOfStudy(string id, string date)
         {
-            User user = db.Users.SingleOrDefault(x => x.Id == id);
+            User user = database.Users.FirstOrDefault(x => x.Id == id);
             if (user != null)
             {
                 user.StudyDate = date;
-                db.Users.Update(user);
-                db.SaveChanges();
+                database.Users.Update(user);
+                database.SaveChanges();
                 return GetUser(id);
             }
             return null;

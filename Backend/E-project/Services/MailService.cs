@@ -1,50 +1,55 @@
-﻿using E_project.Models;
-using E_project.Models.UIModels;
-using Microsoft.AspNetCore.Mvc;
+﻿using EProject.Models;
+using EProject.Models.UIModels;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
-namespace E_project.Services
+namespace EProject.Services
 {
     public class MailService
     {
-        private E_projectContext db;
+        private EProjectContext database;
         private UserService userService;
         private HtmlService htmlService;
-        private string domain;
+        private SmtpClient smtpClient;
 
-        public MailService(E_projectContext db, UserService userService, HtmlService htmlService)
+        private readonly string domain = "http://localhost:8080";
+
+        public MailService(EProjectContext database, UserService userService, HtmlService htmlService, SmtpClient smtpClient)
         {
-            this.db = db;
+            this.database = database;
             this.userService = userService;
             this.htmlService = htmlService;
-            this.domain = "http://localhost:8080";
+            this.smtpClient = smtpClient;
+
+            this.smtpClient.Host = "smtp.gmail.com";
+            this.smtpClient.Port = 587;
+            this.smtpClient.EnableSsl = true;
+            this.smtpClient.Credentials = new NetworkCredential("e.project.rv@gmail.com", "vrfvwzemrducyhiq");
         }
 
         public bool CheckIsMailConfirmed(string userId)
         {
-            ConfirmEmail email = db.ConfirmEmail.SingleOrDefault(x => x.UserId == userId);
+            ConfirmEmail email = database.ConfirmEmails.FirstOrDefault(x => x.UserId == userId);
 
             if (email != null)
             {
-                return email.isConfirmed;
+                return email.IsConfirmed;
             }
             return false;
         }
 
         public void SetEmailStatus(bool isConfirmed, string userId)
         {
-            ConfirmEmail email = db.ConfirmEmail.Single(x => x.UserId == userId);
+            ConfirmEmail email = database.ConfirmEmails.FirstOrDefault(x => x.UserId == userId);
 
             if(email != null)
             {
-                email.isConfirmed = isConfirmed;
-                db.ConfirmEmail.Update(email);
-                db.SaveChanges();
+                email.IsConfirmed = isConfirmed;
+                database.ConfirmEmails.Update(email);
+                database.SaveChanges();
             }
         }
 
@@ -53,16 +58,16 @@ namespace E_project.Services
             ConfirmEmail record = new ConfirmEmail() {
                 Id = Guid.NewGuid().ToString(),
                 UserId = userId,
-                isConfirmed = false
+                IsConfirmed = false
             };
 
-            db.ConfirmEmail.Add(record);
-            db.SaveChanges();
+            database.ConfirmEmails.Add(record);
+            database.SaveChanges();
         }
 
         public void SendConfirmMail(string userId)
         {
-            ConfirmEmail record = db.ConfirmEmail.Single(x => x.UserId == userId);
+            ConfirmEmail record = database.ConfirmEmails.FirstOrDefault(x => x.UserId == userId);
             UserUI user = userService.GetUser(userId);
 
             if (record.Code == null)
@@ -70,16 +75,8 @@ namespace E_project.Services
                 string confirmCode = Guid.NewGuid().ToString();
 
                 record.Code = confirmCode;
-                db.ConfirmEmail.Update(record);
-                db.SaveChanges();
-
-                var smtpClient = new SmtpClient
-                {
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    EnableSsl = true,
-                    Credentials = new NetworkCredential("e.project.rv@gmail.com", "vrfvwzemrducyhiq")
-                };
+                database.ConfirmEmails.Update(record);
+                database.SaveChanges();
 
                 MailMessage mailMessage = new MailMessage("e.project.rv@gmail.com", user.Email)
                 {
@@ -95,19 +92,11 @@ namespace E_project.Services
 
         public ConfirmEmail GetConfirmEmailRecord(string userId)
         {
-            return db.ConfirmEmail.Single(x => x.UserId == userId);
+            return database.ConfirmEmails.SingleOrDefault(x => x.UserId == userId);
         }
 
         public void SendMail(MailUI mail)
         {
-            var smtpClient = new SmtpClient
-            {
-                Host = "smtp.gmail.com", 
-                Port = 587,
-                EnableSsl = true,
-                Credentials = new NetworkCredential("e.project.rv@gmail.com", "vrfvwzemrducyhiq")
-            };
-
             MailMessage mailMessage = new MailMessage("e.project.rv@gmail.com", mail.ToUser)
             {
                 Subject = mail.Subject,
@@ -119,14 +108,6 @@ namespace E_project.Services
 
         public void SendStudyMail(string toUser, string date)
         {
-            var smtpClient = new SmtpClient
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                Credentials = new NetworkCredential("e.project.rv@gmail.com", "vrfvwzemrducyhiq")
-            };
-
             MailMessage mailMessage = new MailMessage("e.project.rv@gmail.com", toUser)
             {
                 Subject = "E-project",

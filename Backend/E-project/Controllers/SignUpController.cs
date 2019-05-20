@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using E_project.Models;
-using E_project.Models.UIModels;
-using E_project.Services;
-using Microsoft.AspNetCore.Http;
+﻿using EProject.Models.UIModels;
+using EProject.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace E_project.Controllers
+namespace EProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -16,13 +10,11 @@ namespace E_project.Controllers
     {
         private UserService userService;
         private MailService mailService;
-        private E_projectContext db;
 
-        public SignUpController(UserService userService, MailService mailService, E_projectContext db)
+        public SignUpController(UserService userService, MailService mailService)
         {
             this.userService = userService;
             this.mailService = mailService;
-            this.db = db;
         }
 
         [HttpPost]
@@ -34,18 +26,18 @@ namespace E_project.Controllers
             }
             if (userService.IsEmailExist(user.Email))
             {
-                return BadRequest("User with such email alredy exist!");
+                return Ok("alredy exist");
             }
 
             userService.AddUser(user);
 
-            UserUI DbUser = userService.GetUser(user.Email, user.Password);
+            UserUI dbUser = userService.GetUser(user.Email, user.Password);
 
-            mailService.AddNewRecord(DbUser.Id);
+            mailService.AddNewRecord(dbUser.Id);
 
             var response = new {
-                isConfirmed = mailService.CheckIsMailConfirmed(DbUser.Id),
-                user = DbUser
+                isConfirmed = mailService.CheckIsMailConfirmed(dbUser.Id),
+                user = dbUser
             };
 
             return Ok(response);

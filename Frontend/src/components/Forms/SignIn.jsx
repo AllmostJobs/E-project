@@ -8,6 +8,7 @@ import { setUser } from "../../store/actions/userActions";
 import { setEmail } from "../../store/actions/emailActions";
 import Cookies from "js-cookie";
 import Axios from "axios";
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const SignIn = ({ setUser, setEmail }) => {
     const [data, setData] = useState({
@@ -15,29 +16,34 @@ const SignIn = ({ setUser, setEmail }) => {
         password: ''
     });
 
+    const [loader, setLoader] = useState(false);
     const [inputError, setInputError] = useState(false);
 
     const Submit = (e) => {
         e.preventDefault();
+        setLoader(true);
         Axios.post('http://localhost:64660/api/signin', data)
         .then(({ data }) => {
-            setInputError(false);
-            Cookies.set('email', data.isConfirmed);
-            setEmail(data.isConfirmed);
-            Cookies.set('user', data.user);
-            setUser(data.user);
+            setLoader(false);
+            if(data !== "error") {
+                setInputError(false);
+                Cookies.set('email', data.isConfirmed);
+                setEmail(data.isConfirmed);
+                Cookies.set('user', data.user);
+                setUser(data.user);
+            } else{
+                setInputError(true);
+            }
         })
-        .catch(error => !!error.response && console.log(error.response), setInputError(true));
+        .catch(error => !!error.response && console.log(error.response));
     }
 
     const onChange = ({target: {name, value}}) => {
+        setInputError(false); 
         setData(data => ({
             ...data,
             [name]: value
         }))
-        if(value == '') {
-            setInputError(false); 
-        }
     }
 
     const { email, password } = data;
@@ -77,6 +83,7 @@ const SignIn = ({ setUser, setEmail }) => {
                     <Link className="custom-link" to="/sign-up" >Registration</Link>
                 </Button>
             </form>
+            { loader && <LinearProgress style={{'height':'2px'}} />}
         </div>
     )
 }

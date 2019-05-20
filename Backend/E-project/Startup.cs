@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
-using E_project.Models;
-using E_project.Services;
+using EProject.Models;
+using EProject.Services;
 using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -18,7 +19,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace E_project
+namespace EProject
 {
     public class Startup
     {
@@ -31,7 +32,7 @@ namespace E_project
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<E_projectContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:E_projectConnection"]));
+            services.AddDbContext<EProjectContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:EProjectConnection"]));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -58,12 +59,13 @@ namespace E_project
                 .Build());
             });
 
-            services.AddHangfire(x => x.UseSqlServerStorage("Integrated Security=true;Persist Security Info=False;Initial Catalog=E_projectDb;Data Source=.\\SQLEXPRESS"));
+            services.AddHangfire(x => x.UseSqlServerStorage("Integrated Security=true;Persist Security Info=False;Initial Catalog=EProjectDb;Data Source=.\\SQLEXPRESS"));
             services.AddHangfireServer();
 
+            services.AddTransient<SmtpClient>();
             services.AddTransient<AuthService>();
             services.AddTransient<SortService>();
-            services.AddTransient<SerchService>();
+            services.AddTransient<SearchService>();
             services.AddTransient<MailService>();
             services.AddTransient<HangfireService>();
             services.AddTransient<UserService>();

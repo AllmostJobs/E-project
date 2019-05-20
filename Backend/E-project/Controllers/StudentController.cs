@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using E_project.Models;
-using E_project.Models.UIModels;
-using E_project.Services;
+﻿using EProject.Models;
+using EProject.Models.UIModels;
+using EProject.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace E_project.Controllers
+namespace EProject.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
@@ -53,7 +48,8 @@ namespace E_project.Controllers
         [HttpPost("email/confirm")]
         public IActionResult ConfirmEmail(ConfirmEmailUI obj)
         {
-            if(obj.UserId != null || obj.Code != null) { 
+            if(obj.UserId != null || obj.Code != null)
+            { 
                 ConfirmEmail record = mailService.GetConfirmEmailRecord(obj.UserId);
                 if(obj.Code == record.Code)
                 {

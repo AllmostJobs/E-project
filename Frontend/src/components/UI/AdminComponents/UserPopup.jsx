@@ -17,7 +17,7 @@ const UserPopup = ({ user, setClickedUser, setMail, mail, setMessageStatus, mess
         e.preventDefault();
         const token = Cookies.getJSON('user').token;
         if(mail.subject != '' && mail.message != '') {
-            Axios.post('http://localhost:64660/api/admin/mail', mail,  { headers: { Authorization: `Bearer ${token}` } })
+            Axios.post('http://localhost:64660/api/admin/send-mail', mail,  { headers: { Authorization: `Bearer ${token}` } })
             .then(({ data }) => {
                 
             })

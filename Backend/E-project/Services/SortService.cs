@@ -1,20 +1,15 @@
-﻿using E_project.Models;
-using E_project.Models.UIModels;
-using System;
+﻿using EProject.Models.UIModels;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace E_project.Services
+namespace EProject.Services
 {
     public class SortService
     {
-        E_projectContext db;
         UserService userService;
 
-        public SortService(E_projectContext db, UserService userService)
+        public SortService(UserService userService)
         {
-            this.db = db;
             this.userService = userService;
         }
 

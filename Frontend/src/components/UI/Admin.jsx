@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Cookies from 'js-cookie';
 import { setUser } from "../../store/actions/userActions";
 import { connect } from "react-redux";
 import Header from "./generalComponents/Header";
 import { openNotification } from "./generalComponents/WelcomeNotification";
 import UserTable from "./AdminComponents/UserList";
-import Serching from "./AdminComponents/Serching";
+import Searching from "./AdminComponents/Searching";
 import Sorting from "./AdminComponents/Sorting";
-import Axios from "axios";
 import UserPopup from "./AdminComponents/UserPopup";
 import { TitleHeader } from "./AdminComponents/TitleHeader";
 
@@ -44,7 +43,7 @@ const Admin = ({ setUser, user }) => {
                 <TitleHeader/>
                 <div className="main-wrapper">
                     <div className="operations-wrapper">
-                        <Serching setUserList={setUserList}/>
+                        <Searching setUserList={setUserList}/>
                         <Sorting setUserList={setUserList}/>
                     </div>
                     <UserTable 

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { Link } from 'react-router-dom';
@@ -9,6 +8,7 @@ import { setUser } from "../../store/actions/userActions";
 import { setEmail } from "../../store/actions/emailActions";
 import { DatePicker } from 'antd';
 import Axios from "axios";
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const SignUp = ({ setUser, setEmail }) => {
     const [data, setData] = useState({
@@ -22,37 +22,40 @@ const SignUp = ({ setUser, setEmail }) => {
 
     const [firstNameValid, setFirstNameValid] = useState('');
     const [lastNameValid, setLastNameValid] = useState('');
+    const [emailExist, setEmailExist] = useState('');
     const [passwordValid, setPasswordValid] = useState('');
     const [rePassValid, setRePassValid] = useState('');
+    const [loader, setLoader] = useState(false);
 
     const onDateChange = (date, dateStr) => setData(data => ({ ...data, dateOfBirth: dateStr }));
 
     const { firstName, lastName, email, password, retypePassword } = data;
 
-    
-
     const Submit = (e) => {
         e.preventDefault();
+        setLoader(true);
         if(firstName.length < 4 || isNaN(firstName) == false) {
             setFirstNameValid('Must be more than 4 characters and should not be completely digits');
         }else{
-            setFirstNameValid('');
             if(lastName.length < 4 || isNaN(firstName) == false) {
                 setLastNameValid('Must be more than 4 characters and should not be completely digits');
             } else{
-                setLastNameValid('');
                 if(password.length < 6) {
-                    setPasswordValid('Its to short');
+                    setPasswordValid('Must be more than 6 characters');
                 } else{
-                    setPasswordValid('');
                     if(retypePassword === password) {
-                        setRePassValid('');
                         Axios.post('http://localhost:64660/api/signup', data)
                         .then(({ data }) => {
-                            Cookies.set('email', data.isConfirmed);
-                            setEmail(data.isConfirmed);
-                            Cookies.set('user', data.user);
-                            setUser(data.user);
+                            setLoader(false);
+                            if(data !== 'alredy exist') {
+                                Cookies.set('email', data.isConfirmed);
+                                setEmail(data.isConfirmed);
+                                Cookies.set('user', data.user);
+                                setUser(data.user);
+                            }else {
+                                setEmailExist('User with such email alredy exist');
+                            }
+                            
                         }).catch(error => !!error.response && console.log(error.response));
                     } else{
                         setRePassValid('Not matching password');
@@ -63,6 +66,11 @@ const SignUp = ({ setUser, setEmail }) => {
     }
 
     const onChange = ({target: {name, value}}) => {
+        setFirstNameValid('');
+        setLastNameValid('');
+        setEmailExist('');
+        setPasswordValid('');
+        setRePassValid('');
         setData(data => ({
             ...data,
             [name]: value
@@ -104,6 +112,7 @@ const SignUp = ({ setUser, setEmail }) => {
                     value={email}
                     onChange={onChange}
                 />
+                <span className="valid-message">{emailExist}</span>
                 <TextField
                     id="password"
                     label="Password"
@@ -146,6 +155,7 @@ const SignUp = ({ setUser, setEmail }) => {
                     <Link className="custom-link" to="/">Back</Link>
                 </Button>
             </form>
+            { loader && <LinearProgress style={{'height':'2px'}} />}
         </div>
     )
 }

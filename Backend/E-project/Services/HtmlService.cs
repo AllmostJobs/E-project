@@ -1,10 +1,10 @@
-﻿using E_project.Models.UIModels;
+﻿using EProject.Models.UIModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace E_project.Services
+namespace EProject.Services
 {
     public class HtmlService
     {

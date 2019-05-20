@@ -1,43 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using E_project.Models.UIModels;
-using E_project.Services;
+﻿using EProject.Models.UIModels;
+using EProject.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace E_project.Controllers
+namespace EProject.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase
     {
-        UserService userService;
-        SortService sortService;
-        SerchService serchService;
-        MailService mailService;
+        private UserService userService;
+        private SortService sortService;
+        private SearchService searchService;
+        private MailService mailService;
 
-        public AdminController(UserService userService, SortService sortService, SerchService serchService, MailService mailService)
+        public AdminController(UserService userService, SortService sortService, SearchService serchService, MailService mailService)
         {
             this.userService = userService;
             this.sortService = sortService;
-            this.serchService = serchService;
+            this.searchService = serchService;
             this.mailService = mailService;
         }
 
         [HttpGet]
-        public IActionResult SendUsers()
+        public IActionResult GetUsers()
         {
             return Ok(userService.GetUsers());
         }
 
-        [HttpGet("serch/{value}")]
-        public IActionResult UserSerch(string value)
+        [HttpGet("search/{value}")]
+        public IActionResult UserSearch(string value)
         {
-            return Ok(serchService.SerchUsers(value));
+            return Ok(searchService.SearchUsers(value));
         }
 
         [HttpGet("sort/{value}")]
@@ -46,7 +41,7 @@ namespace E_project.Controllers
             return Ok(sortService.GetSortedUsers(value));
         }
 
-        [HttpPost("mail")]
+        [HttpPost("send-mail")]
         public IActionResult SendMail(MailUI mail)
         {
             mailService.SendMail(mail);
