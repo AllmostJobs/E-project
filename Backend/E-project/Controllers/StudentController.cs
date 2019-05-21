@@ -38,9 +38,13 @@ namespace EProject.Controllers
         [HttpGet("email/confirm/{id}")]
         public IActionResult SendConfirmMessage(string id)
         {
+            string[] protocolMass = Request.Protocol.ToString().Split('/');
+            string protocol = protocolMass[0].ToLower();
+            string domain = protocol + "://" + Request.Host.ToString();
+
             if (mailService.CheckIsMailConfirmed(id) == false)
             {
-                mailService.SendConfirmMail(id);
+                mailService.SendConfirmMail(id, domain);
             }
             return Ok(mailService.CheckIsMailConfirmed(id));
         }
